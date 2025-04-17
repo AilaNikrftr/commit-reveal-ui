@@ -36,7 +36,7 @@ contract CommitRevealExecutor {
 
     // Users call this function to submit their hashed data during the commit phase
     function commitTx(bytes32 hash) external {
-        //  Overwrites existing commits (for testing only — remove in production)
+        //  Overwrites existing commits (for testing only — remove later)
         commitments[msg.sender] = Commitment(hash, block.timestamp, false);
         emit Committed(msg.sender, hash, block.timestamp);
     }
@@ -58,13 +58,13 @@ contract CommitRevealExecutor {
         ILogic(coreLogicContract).executeAction(msg.sender, data);
     }
 
-    // Allows updating the core logic contract (in case you upgrade or change functionality)
+    // Allows updating the core logic contract (in case upgrade or change functionality)
     function updateCoreLogic(address newCore) external {
-        // NOTE: In production, you should restrict this with `onlyOwner`
+        // NOTE: In production, should restrict this with `onlyOwner`
         coreLogicContract = newCore;
     }
 
-    // Testing-only: Reset your commit entry (to retry)
+    // Testing-only: Reset commit entry (to retry)
     function clearCommit() external {
         delete commitments[msg.sender];
     }
